@@ -17,7 +17,7 @@ server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
 # routes
 @server.route("/login", methods=["POST"])
 def login():
-    auth = request.authorization
+    auth = request.authorization  # Basic <username>:<password>
 
     # check if auth is valid
     if not auth or not auth.username or not auth.password:
@@ -40,6 +40,25 @@ def login():
         return jsonify({"token": token}), 200
 
     return jsonify({"message": "invalid credentials"}), 401
+
+
+@server.route("/validate", methods=["POST"])
+def validate():
+    encoded_token = request.headers.get("Authorization")  # Bearer <token>
+    if not encoded_token:
+        return jsonify({"message": "missing token"}), 401
+
+    token = encoded_token.split(" ")[1]
+
+    try:
+        decoded_token = jwt.decode(
+            token, os.environ.get("SECRET_KEY"), algorithms=["HS256"]
+        )
+        return jsonify({"message": "valid token"}), 200
+    except jwt.ExpiredSignatureError:
+        return jsonify({"message": "expired token"}), 401
+    except:
+        return jsonify({"message": "invalid token"}), 401
 
 
 if __name__ == "__main__":
