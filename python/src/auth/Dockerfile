@@ -1,11 +1,13 @@
 FROM python:3.10-slim-bullseye
 
-RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests\
-  build-essential default-libmysqlclient-dev \
-  && pip install --no-cache-dir --upgrade pip \
+RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests \
+  build-essential default-libmysqlclient-dev pkg-config \
+  && pip install --no-cache-dir --upgrade pip 
 
-  # Set the working directory in the container
-  WORKDIR /app
+# Set the working directory in the container
+WORKDIR /app
+
+
 COPY ./requirements.txt /app
 
 # Install any needed packages specified in requirements.txt
