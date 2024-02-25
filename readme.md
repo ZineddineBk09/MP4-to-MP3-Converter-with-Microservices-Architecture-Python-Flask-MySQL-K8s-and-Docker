@@ -1,15 +1,16 @@
 # MP4 to MP3 Converter with Python, Flask, MySQL, K8s, and Docker
 
-(hey copilot, please help me write a good README.md file for this project. I want to make sure that I cover all the important aspects of the project, such as the technologies used, the architecture, the deployment, and the setup. I also want to make sure that the README.md file is well-organized and easy to read. also it's important to use emojis for fun.Thanks!)
-
 ## Table of Contents 📋
 
-- [Introduction](#introduction)
-- [Technologies](#technologies)
-- [Architecture](#architecture)
-- [Deployment](#deployment)
-- [Setup](#setup)
-- [Conclusion](#conclusion)
+- [MP4 to MP3 Converter with Python, Flask, MySQL, K8s, and Docker](#mp4-to-mp3-converter-with-python-flask-mysql-k8s-and-docker)
+  - [Table of Contents 📋](#table-of-contents-)
+  - [Introduction 📝](#introduction-)
+  - [Technologies 🛠️](#technologies-️)
+  - [Development Environment 🛠️](#development-environment-️)
+  - [Architecture 🏗️](#architecture-️)
+  - [Deployment 🚀](#deployment-)
+  - [Setup 🛠️](#setup-️)
+  - [Conclusion 🎉](#conclusion-)
 
 ## Introduction 📝
 
@@ -39,11 +40,12 @@ The application will be based on a **Microservices Architecture**. The applicati
 - **API Gateway**: This is the entry point for the system. It will be responsible for routing requests to the appropriate services.
 - **Auth service**: This service will be responsible for handling user authentication and authorization.
 - **Auth DB**: This service will be responsible for storing user information.
-- **Queue Service**: This service will use RabbitMQ to store messages that need to be processed by the system.
-- **Storage DB**: This service will be responsible for storing the MP4 and MP3 files.
+- **Queue Service**: This service will use RabbitMQ to store messages that need to be processed by the system. so when a user uploads an MP4 file, a message will be sent to the queue, and the video to mp3 service will process the message (which contains the video id in MongoDB) and convert the MP4 file to an MP3 file.
+- **Storage DB**: This service **(Mongo GridFS)** will be responsible for storing the MP4 and MP3 files.
 - **Video to mp3 service**: This service will be responsible for converting the MP4 file to an MP3 audio file.
 - **Notification service**: This service will be responsible for sending notifications to users.
 - **K8s**: All the above services will be deployed on a **Kubernetes** cluster.
+- ![Architecture](./python/src/images/architecture.png)
 
 ## Deployment 🚀
 
@@ -61,7 +63,8 @@ The first step is to install the required dependencies. The application requires
 >
 > ### MySQL 🐬
 >
-> - MySQL: `sudo apt-get install mysql-server` `https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04`
+> - MySQL: `sudo apt-get install mysql-server`
+> - Tutorial: `https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04`
 > - Run the following commands to create the database, user, and the users table:
 >   `mysql -uroot < init.sql`
 >
