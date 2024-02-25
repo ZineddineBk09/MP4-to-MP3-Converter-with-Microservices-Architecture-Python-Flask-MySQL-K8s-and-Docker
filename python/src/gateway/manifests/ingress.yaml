@@ -1,0 +1,25 @@
+# ingress in the ctx of k8s is a way to expose services to the outside world
+# in our case we're creating a service (group of pods (multiple instances of the same service runing to provide redundancy and load balancing)) and exposing it to the outside world
+# so we have our services which consistes of pods which are sitting in k8s cluster (private network) and we want to expose them to the outside world so we can perform requests from the outside world
+# we do this by making use of an ingress, which consists of a load balancer that represents an entry point to our cluster and a set of rules that define how the load balancer should route traffic to the services (ex: if the request is for mp3converter.com, route it to the gateway service)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  rules:
+    - host: mp3converter.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gateway
+                port:
+                  number: 8080
+
