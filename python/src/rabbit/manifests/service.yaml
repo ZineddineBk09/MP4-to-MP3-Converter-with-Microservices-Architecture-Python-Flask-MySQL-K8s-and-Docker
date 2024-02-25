@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq
+  ports:
+    - name: http
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+    - name: amqp
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+# and since we need to access rabbitmq management console from outside the cluster (through a browser), we need to expose port 15672 with an ingress.
